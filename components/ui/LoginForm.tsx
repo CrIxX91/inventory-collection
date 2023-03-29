@@ -32,7 +32,7 @@ export const LoginForm = () => {
       return;
     }
 
-    router.replace('/home');
+    router.replace('/add');
 
   }
 

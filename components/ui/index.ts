@@ -4,4 +4,5 @@ export * from './Navbar';
 
 export * from './SelectBrand';
 export * from './ModalSuccess';
-export * from './Spinner'
+export * from './Spinner';
+export * from './CollectionEmpty';

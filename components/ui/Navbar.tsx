@@ -1,6 +1,6 @@
+import NextLink from 'next/link';
 import { Text, useTheme } from '@nextui-org/react';
-import React from 'react'
-import { Timer } from './Timer';
+
 
 export const Navbar = () => {
     
@@ -13,6 +13,7 @@ export const Navbar = () => {
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'end',
+        gap:'2em',
         padding:'0px 20px',
         backgroundColor:theme?.colors.gray100.value,
         position:'sticky',
@@ -20,8 +21,12 @@ export const Navbar = () => {
         height: '60px',
         zIndex:'99'
     }}>
-        {/* <Text color='white' transform='capitalize' h3 >Timer</Text> */}
-        {/* <Timer/> */}
+        <NextLink href='/add' passHref>
+            <Text color='white' transform='capitalize'>Add Figure</Text>
+        </NextLink>
+        <NextLink href='/list' passHref>
+            <Text color='white' transform='capitalize'>Collection</Text>
+        </NextLink>
     </div>
   )
 }

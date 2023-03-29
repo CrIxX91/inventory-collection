@@ -3,7 +3,7 @@ import { FC} from 'react';
 
 interface ModalProps{
     open?:boolean;
-    onOpenChanged:(e: PressEvent) => void;
+    onOpenChanged?:(e: PressEvent) => void;
 }
 
 export const Spinner:FC<ModalProps> = ({open,onOpenChanged}) => {
