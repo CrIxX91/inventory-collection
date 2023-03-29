@@ -5,7 +5,7 @@ import { AuthContext } from "@/context";
 import { Image, Grid, FormElement, Spacer, Container, Text, Button, Card, Row} from "@nextui-org/react";
 import { AxiosRequestConfig } from "axios";
 import { NextPage } from "next";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useRef, useState } from "react";
 import mewtwo from '../public/Mewtwo.png'
 
 interface DefaulState{
@@ -26,6 +26,7 @@ const HomePage: NextPage = () => {
     
     // const [token, settoken] = useState('');
 
+    
     const onComplete =()=>{
         setOpen(!open);
         console.log(open)
@@ -38,6 +39,9 @@ const HomePage: NextPage = () => {
         quantity:''
 
     });
+    const nameRef = useRef<HTMLInputElement>(null);
+    const priceRef = useRef<HTMLInputElement>(null);
+    const quantityRef = useRef<HTMLInputElement>(null);
 
     
 
@@ -81,7 +85,15 @@ const HomePage: NextPage = () => {
             console.log(response)
             
             if(response){
+                
+                clearform();
+                setInputValues({
+                    name: '',
+                    brand: '',
+                    price:'',
+                    quantity:''
             
+                });
                 setTimeout(() => {
                     setLoading(false);
                     setOpen(!open)
@@ -93,6 +105,14 @@ const HomePage: NextPage = () => {
             console.log('error catch',error);
             
         }
+    }
+    const clearform = ()=>{
+        if(nameRef.current)
+            nameRef.current.value =''
+        if(priceRef.current)
+            priceRef.current.value =''
+        if(quantityRef.current)
+            quantityRef.current.value =''
     }
 
     return(
@@ -117,7 +137,7 @@ const HomePage: NextPage = () => {
                                 className={'image'} />
                         </Grid>
 
-                        <Grid css={{display:'flex'}} justify='center' direction="column" md={3} xs={8}>
+                        <Grid css={{display:'flex'}} justify='center' direction="column" xs={10} md={4} sm={6}>
                         
                         <Card css={{ p: '20px' }}>
                         <Card.Header>
@@ -130,17 +150,18 @@ const HomePage: NextPage = () => {
                             <Spacer y={1} />
                             <SelectBrand onValueChanged={onSelectChange}/>
                             <Spacer y={2} />
-                            <InputFormNoSSR id="name" placeholder="Name" initialValue='' onChangeField={onFieldChange} />
+                            <InputFormNoSSR id="name" placeholder="Name" onChangeField={onFieldChange} refobj={nameRef}/>
                             <Spacer y={2} />
-                            <InputFormNoSSR id="price" placeholder="Price" initialValue='' onChangeField={onFieldChange}/>
+                            <InputFormNoSSR id="price" placeholder="Price" onChangeField={onFieldChange} refobj={priceRef}/>
                             <Spacer y={2} />
-                            <InputFormNoSSR id="quantity" placeholder="Quantity" initialValue='' onChangeField={onFieldChange}/>
+                            <InputFormNoSSR id="quantity" placeholder="Quantity" onChangeField={onFieldChange} refobj={quantityRef}/>
                             <Spacer y={1} />
                         </Card.Body>
                             <Card.Divider />
                             <Card.Footer>
                                 <Row justify="flex-end">
                                     <Button shadow color="secondary" size="sm" onPress={sendItem}>Save</Button>
+                                    {/* <Button shadow color="secondary" size="sm" onPress={clearform}>Clear</Button> */}
                                 </Row>
                             </Card.Footer>
                             

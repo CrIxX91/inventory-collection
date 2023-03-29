@@ -49,7 +49,7 @@ export const LoginForm = () => {
 
   return (
     <Grid.Container justify="center" css={{backgroundColor: 'var(--nextui-colors-background)'}} >
-      <Grid xs={6} md={4} direction='column'>
+      <Grid xs={10} md={4} sm={6} direction='column'>
               <Card css={{padding:50}}>
                 <Text h2 css={{color:'White'}}> Login </Text>
                 <Badge enableShadow disableOutline color="error" css={{ display: showError ? 'flex': 'none' }}>No reconocemos ese usuario / contraseña</Badge>
