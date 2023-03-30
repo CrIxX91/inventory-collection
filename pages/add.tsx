@@ -185,7 +185,7 @@ const HomePage: NextPage = () => {
                             <Card.Footer>
                                 <Row justify="flex-end">
                                     <Button shadow color="secondary" size="sm" onPress={sendItem}>Save</Button>
-                                    <Button shadow color="secondary" size="sm" onPress={testEmit}>Emit</Button>
+                                    {/* <Button shadow color="secondary" size="sm" onPress={testEmit}>Emit</Button> */}
                                 </Row>
                             </Card.Footer>
                             
