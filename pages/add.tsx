@@ -2,12 +2,14 @@ import { authApi } from "@/api";
 import { Layout } from "@/components/layout";
 import { InputFormNoSSR, ModalSuccess, SelectBrand, Spinner } from "@/components/ui";
 import { AuthContext } from "@/context";
+import { pusher } from "@/utils";
+// import Pusher from "pusher-js";
 // import { socket } from "@/utils";
 import { Image, Grid, FormElement, Spacer, Container, Text, Button, Card, Row} from "@nextui-org/react";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { NextPage } from "next";
-import { ChangeEvent, useContext, useRef, useState } from "react";
-import mewtwo from '../public/Mewtwo.png'
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import mewtwo from '../public/Mewtwo.png';
 
 interface DefaulState{
     name:string;
@@ -19,6 +21,17 @@ interface DefaulState{
 
 
 const HomePage: NextPage = () => {
+
+    useEffect(() => {
+        
+        const channel = pusher.subscribe("collection-inventory-production");
+
+        channel.bind("update-list", (data:any) => {
+            console.log(data)
+            // Method to be dispatched on trigger.
+        });
+
+      }, []);
 
     const {refreshToken,checkToken} = useContext(AuthContext);
     const [register, setRegister] = useState<DefaulState>();
@@ -94,7 +107,7 @@ const HomePage: NextPage = () => {
             if(data){
                 
                 clearform();
-                
+                // pusher.send_event("add item", "update");
                 setInputValues({
                     name: '',
                     brand: inputValues.brand,

@@ -6,6 +6,7 @@ import { CollectionList } from '@/components/collection';
 import { Layout } from '@/components/layout'
 import { CollectionEmpty, Spinner, StatsBar } from '@/components/ui';
 import { Figure, ICollection } from '@/interfaces';
+import { pusher } from '@/utils';
 // import { socket } from '@/utils';
 
 
@@ -16,6 +17,39 @@ const ListPage: NextPage = () => {
   const [loading, setLoading] = useState(false);
   const [totalPieces, setTotalPieces] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+
+        const channel = pusher.subscribe("collector-app");
+        // channel.bind("pusher:subscription_succeeded", (members:any) => {
+        //   // total subscribed
+        //   console.log(members)
+        // //   setOnlineUsersCount(members.count);
+        // });
+        channel.bind("pusher:subscription_succeeded", () => {
+          console.log('subscription_succeeded')
+        });
+        // channel.bind("pusher:subscription_error", (error:any) => {
+        //   console.log('subscription_error',error)
+        // });
+
+        channel.bind("update-list", (data:any) => {
+            console.log(data.collection);
+            const newData = data.collection as Figure[];
+            
+            if(newData.length >0){
+              updateListInfo(newData)
+            }
+            console.log(newData);
+            // Method to be dispatched on trigger.
+        });
+
+        return () => {
+          pusher.unsubscribe("collector-app");
+        };
+
+  }, [])
+  
 
   const getList = async()=> {
     try {
