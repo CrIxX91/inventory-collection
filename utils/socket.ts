@@ -1,4 +1,4 @@
 import io from 'socket.io-client';
 import { base } from '@/api/AuthApi';
 
-export const socket = io(base,{withCredentials:true});
+export const socket = io(base,{});
