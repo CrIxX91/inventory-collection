@@ -3,7 +3,7 @@ import { Layout } from "@/components/layout";
 import { InputFormNoSSR, ModalSuccess, SelectBrand, Spinner } from "@/components/ui";
 import { AuthContext } from "@/context";
 import { Image, Grid, FormElement, Spacer, Container, Text, Button, Card, Row} from "@nextui-org/react";
-import { AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import { NextPage } from "next";
 import { ChangeEvent, useContext, useRef, useState } from "react";
 import mewtwo from '../public/Mewtwo.png'
@@ -23,6 +23,8 @@ const HomePage: NextPage = () => {
     const [register, setRegister] = useState<DefaulState>();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [message, setMessage] = useState('');
     
     // const [token, settoken] = useState('');
 
@@ -89,7 +91,7 @@ const HomePage: NextPage = () => {
                 clearform();
                 setInputValues({
                     name: '',
-                    brand: '',
+                    brand: inputValues.brand,
                     price:'',
                     quantity:''
             
@@ -100,8 +102,21 @@ const HomePage: NextPage = () => {
                 }, 1000);
             }
             // setBrands(resp.data.brands);
-        } catch (error) {
-            setLoading(false);
+        } catch (error:any) {
+            const err:AxiosError =error;
+            console.log(err);
+
+            if(err.response){
+                const data:any = err.response.data;
+                setMessage(data.message)
+                setSuccess(data.success);
+            }
+            
+            setTimeout(() => {
+                setLoading(false);
+                setOpen(!open);
+            }, 1000);
+            // setOpen(!open)
             console.log('error catch',error);
             
         }
@@ -169,7 +184,7 @@ const HomePage: NextPage = () => {
                             
                         </Grid>
                     </Grid.Container>
-                    <ModalSuccess open={open} onOpenChanged={onComplete}/>
+                    <ModalSuccess open={open} onOpenChanged={onComplete} success={success} message={message}/>
                     <Spinner open={loading} onOpenChanged={onComplete}/>
                 </Container>
            

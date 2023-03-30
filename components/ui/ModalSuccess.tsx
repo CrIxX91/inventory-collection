@@ -1,12 +1,14 @@
 import { Button, Modal, PressEvent, Text } from '@nextui-org/react';
-import { FC, SetStateAction, useState } from 'react';
+import { FC} from 'react';
 
 interface ModalProps{
     open?:boolean;
     onOpenChanged:(e: PressEvent) => void;
+    success:boolean;
+    message:string;
 }
 
-export const ModalSuccess:FC<ModalProps> = ({open,onOpenChanged}) => {
+export const ModalSuccess:FC<ModalProps> = ({open,onOpenChanged,success,message}) => {
 
   return (
     <Modal
@@ -16,12 +18,18 @@ export const ModalSuccess:FC<ModalProps> = ({open,onOpenChanged}) => {
         open={open}
       >
         <Modal.Header>
-          <Text id="modal-title" size={18} color="success">
-            Succes
-          </Text>
+          {
+            success 
+              ? <Text id="modal-title" size={18} color="success">Succes</Text>
+              : <Text id="modal-title" size={18} color="error">Error</Text>
+          }
         </Modal.Header>
         <Modal.Body>
-          <Text h3 css={{textAlign:'center'}}>New Item Added</Text>
+          {
+            success 
+              ? <Text h3 css={{textAlign:'center'}}>New Item Added</Text> 
+              : <Text h3 css={{textAlign:'center'}}>{message}</Text>
+          }
         </Modal.Body>
         <Modal.Footer>
           <Button auto flat color="error" onPress={onOpenChanged}>

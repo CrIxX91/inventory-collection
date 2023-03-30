@@ -1,5 +1,5 @@
 import { Figure } from "@/interfaces"
-import { BrandLogos } from "@/utils";
+import { BrandLogos, formatter } from "@/utils";
 import { Card, Col, Grid, Row, Text } from "@nextui-org/react";
 import { FC } from "react"
 
@@ -22,14 +22,7 @@ export const CollectionItem:FC<CollectionItemProps>  = ({figure}) => {
         return logosrc
     }
     
-    const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      
-        // These options are needed to round to whole numbers if that's what you want.
-        //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-        //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-    });
+   
 
   return (
     // <Grid xs={6} sm={3} md={2} xl={8} key={_id} >

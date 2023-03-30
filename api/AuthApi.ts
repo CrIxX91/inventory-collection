@@ -1,9 +1,11 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-
+export const baseURL ='http://localhost:4000/api/';
+// export const baseURL ='https://inventory-collection-node.vercel.app/api/';
+// baseURL:'https://inventory-collection-node.vercel.app/api/'
 
 const authApi = axios.create({
-    // baseURL:'http://localhost:4000/api/'
-    baseURL:'https://inventory-collection-node.vercel.app/api/'
+    baseURL:baseURL
+    // baseURL:'https://inventory-collection-node.vercel.app/api/'
 });
 
 authApi.interceptors.request.use(
