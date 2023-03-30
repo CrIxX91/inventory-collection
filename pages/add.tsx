@@ -2,6 +2,7 @@ import { authApi } from "@/api";
 import { Layout } from "@/components/layout";
 import { InputFormNoSSR, ModalSuccess, SelectBrand, Spinner } from "@/components/ui";
 import { AuthContext } from "@/context";
+import { socket } from "@/utils";
 import { Image, Grid, FormElement, Spacer, Container, Text, Button, Card, Row} from "@nextui-org/react";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { NextPage } from "next";
@@ -59,6 +60,10 @@ const HomePage: NextPage = () => {
         setInputValues({ ...inputValues, [id]: value });
         console.log({ ...inputValues, [id]: value });
     } 
+
+    const testEmit = ()=>{
+        socket.emit('Figures','update');
+    }
     const onSelectChange=(e:any)=>{
         
         setInputValues({ ...inputValues, ['brand']: e });
@@ -80,15 +85,16 @@ const HomePage: NextPage = () => {
     
             setLoading(true);
 
-            const response = await (await authApi(config)).data;
+            const data = await (await authApi(config)).data;
             
         
             // const resp = await authApi.post('inventory/add',Config);
-            console.log(response)
+            console.log(data)
             
-            if(response){
+            if(data){
                 
                 clearform();
+                
                 setInputValues({
                     name: '',
                     brand: inputValues.brand,
@@ -96,9 +102,12 @@ const HomePage: NextPage = () => {
                     quantity:''
             
                 });
+                setMessage(data.message)
+                setSuccess(data.success);
+                socket.emit('Figures','update');
                 setTimeout(() => {
                     setLoading(false);
-                    setOpen(!open)
+                    setOpen(!open);
                 }, 1000);
             }
             // setBrands(resp.data.brands);
@@ -131,7 +140,7 @@ const HomePage: NextPage = () => {
     }
 
     return(
-        <Layout>
+        <Layout title="Add Item to Collection">
             
             <Container
                 css={{
@@ -176,7 +185,7 @@ const HomePage: NextPage = () => {
                             <Card.Footer>
                                 <Row justify="flex-end">
                                     <Button shadow color="secondary" size="sm" onPress={sendItem}>Save</Button>
-                                    {/* <Button shadow color="secondary" size="sm" onPress={clearform}>Clear</Button> */}
+                                    <Button shadow color="secondary" size="sm" onPress={testEmit}>Emit</Button>
                                 </Row>
                             </Card.Footer>
                             

@@ -6,11 +6,8 @@ import { CollectionList } from '@/components/collection';
 import { Layout } from '@/components/layout'
 import { CollectionEmpty, Spinner, StatsBar } from '@/components/ui';
 import { Figure, ICollection } from '@/interfaces';
-import io from 'socket.io-client';
-import { base } from '@/api/AuthApi';
+import { socket } from '@/utils';
 
-// const socket = io('http://localhost:4000');
-const socket = io(base);
 
 const ListPage: NextPage = () => {
   
@@ -69,10 +66,16 @@ const ListPage: NextPage = () => {
   }, []);
 
   useEffect(() => {
+    
     const receiveFigures =(figures:Figure[])=>{
       updateListInfo(figures);
+      console.log(figures);
     };
-    socket.on('Figures',receiveFigures);
+    socket.on('list',receiveFigures);
+
+    return ()=>{
+      socket.off('list',receiveFigures)
+    }
    
   }, [])
 
