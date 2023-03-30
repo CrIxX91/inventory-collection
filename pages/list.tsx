@@ -6,7 +6,7 @@ import { CollectionList } from '@/components/collection';
 import { Layout } from '@/components/layout'
 import { CollectionEmpty, Spinner, StatsBar } from '@/components/ui';
 import { Figure, ICollection } from '@/interfaces';
-import { socket } from '@/utils';
+// import { socket } from '@/utils';
 
 
 const ListPage: NextPage = () => {
@@ -65,19 +65,19 @@ const ListPage: NextPage = () => {
     getList();
   }, []);
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    const receiveFigures =(figures:Figure[])=>{
-      updateListInfo(figures);
-      console.log(figures);
-    };
-    socket.on('list',receiveFigures);
+  //   const receiveFigures =(figures:Figure[])=>{
+  //     updateListInfo(figures);
+  //     console.log(figures);
+  //   };
+  //   socket.on('list',receiveFigures);
 
-    return ()=>{
-      socket.off('list',receiveFigures)
-    }
+  //   return ()=>{
+  //     socket.off('list',receiveFigures)
+  //   }
    
-  }, [])
+  // }, [])
 
   return (
     <Layout title="Figure Colection List">

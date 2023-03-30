@@ -2,7 +2,7 @@ import { authApi } from "@/api";
 import { Layout } from "@/components/layout";
 import { InputFormNoSSR, ModalSuccess, SelectBrand, Spinner } from "@/components/ui";
 import { AuthContext } from "@/context";
-import { socket } from "@/utils";
+// import { socket } from "@/utils";
 import { Image, Grid, FormElement, Spacer, Container, Text, Button, Card, Row} from "@nextui-org/react";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { NextPage } from "next";
@@ -61,9 +61,9 @@ const HomePage: NextPage = () => {
         console.log({ ...inputValues, [id]: value });
     } 
 
-    const testEmit = ()=>{
-        socket.emit('Figures','update');
-    }
+    // const testEmit = ()=>{
+    //     socket.emit('Figures','update');
+    // }
     const onSelectChange=(e:any)=>{
         
         setInputValues({ ...inputValues, ['brand']: e });
@@ -104,7 +104,7 @@ const HomePage: NextPage = () => {
                 });
                 setMessage(data.message)
                 setSuccess(data.success);
-                socket.emit('Figures','update');
+                // socket.emit('Figures','update');
                 setTimeout(() => {
                     setLoading(false);
                     setOpen(!open);
