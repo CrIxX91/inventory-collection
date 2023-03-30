@@ -8,6 +8,7 @@ import { CollectionEmpty, Spinner, StatsBar } from '@/components/ui';
 import { Figure, ICollection } from '@/interfaces';
 import io from 'socket.io-client';
 
+// const socket = io('http://localhost:4000');
 const socket = io('http://localhost:4000');
 
 const ListPage: NextPage = () => {
