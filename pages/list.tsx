@@ -52,6 +52,7 @@ const ListPage: NextPage = () => {
   
 
   const getList = async()=> {
+    
     try {
       const config: AxiosRequestConfig = {
         method: "GET", 
@@ -60,18 +61,27 @@ const ListPage: NextPage = () => {
 
     setLoading(true);
 
+    // const data:ICollection = await (await authApi(config)).data;
     const data:ICollection = await (await authApi(config)).data;
+    console.log(data)
+    
     
     // console.log(data.figures);
 
     if(data){
       setLoading(false);
-      updateListInfo(data.figures);
+      
+      if(data.figures){
+        console.log(data.figures);
+        updateListInfo(data.figures);
+      }
+        
     }
 
     } catch (error) {
       setLoading(false);
-      console.log('Error on getList')
+      console.log('Error on getList');
+      console.log({error})
     }
     
   }
@@ -97,6 +107,7 @@ const ListPage: NextPage = () => {
 
   useEffect(() => {
     getList();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // useEffect(() => {

@@ -1,7 +1,8 @@
 import { Figure } from "@/interfaces"
 import { BrandLogos, formatter } from "@/utils";
-import { Card, Col, Grid, Row, Text } from "@nextui-org/react";
-import { FC } from "react"
+import { Avatar, Button, Card, Col, Grid, Row, Spacer, Text } from "@nextui-org/react";
+import { FC } from "react";
+import aqua from '../../public/thumbs/aqua.jpg'
 
 interface CollectionItemProps{
     figure:Figure;
@@ -14,7 +15,6 @@ export const CollectionItem:FC<CollectionItemProps>  = ({figure}) => {
     const getLogo = (field:string)=>{
         
         let logosrc='';
-        
         const path = BrandLogos[field as keyof typeof BrandLogos];
 
         if(path)
@@ -25,36 +25,16 @@ export const CollectionItem:FC<CollectionItemProps>  = ({figure}) => {
    
 
   return (
-    // <Grid xs={6} sm={3} md={2} xl={8} key={_id} >
-        <Grid xl={8} xs={10}  key={_id} >
-        <Card isHoverable isPressable css={{ w: "100%", h: "135px" }}>
-            {/* <Text>{name}</Text> */}
-            <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
-                <Col>
-                    {/* <Text size={12} weight="bold" transform="uppercase" color="#9E9E9E">
-                    Your day your way
-                    </Text> */}
-                    <Text h3 color="white">
-                    {name}
-                    </Text>
-                </Col>
-            </Card.Header>
+        <Grid xl={2} lg={2} md={3} sm={3} xs={6}  key={_id} >
+        <Card isHoverable isPressable 
+            css={{ w: "100%", h: "360px", 
+                  backgroundImage:`url(${figure.thumbpath})`,
+                  backgroundPosition:'center',
+                  backgroundRepeat:'no-repeat',
+                  backgroundSize:'cover',
+
+            }} >
             <Card.Body css={{ p: 0 }}>
-                <Row wrap="wrap" justify="flex-end" align="center">
-                
-                <Card.Image 
-                    src={getLogo(brand)} 
-                    height={80}
-                    width={80}
-                    alt={name}
-                    containerCss={{
-                        width: '80px',
-                        maxWidth:'80px',
-                        margin:'0'
-                    }}
-                />    
-                </Row>
-                
             </Card.Body>
            
             <Card.Footer
@@ -65,16 +45,44 @@ export const CollectionItem:FC<CollectionItemProps>  = ({figure}) => {
                   borderTop: "$borderWeights$light solid $gray800",
                   bottom: 0,
                   zIndex: 1,
-                  paddingLeft:'2em',
-                  paddingRight:'1em',
+                  display:'flex',
+                  flexDirection:'column'
                 }}
             >
-              <Row wrap="wrap" justify="space-between" align="center">
-              <Text b>Quantity: {quantity}</Text>
-                <Text css={{ color: "$purple800", fontWeight: "$semibold", fontSize: "$xl" }}>
-                  {formatter.format(price)}
-                </Text>
-              </Row>
+          <Col>
+          <Row>
+            <Col span={5}>
+              <Avatar
+                size="lg"
+                src={getLogo(brand)}
+                color="gradient"
+                bordered
+                squared
+              />
+            </Col>
+            <Col span={12}>
+              <Text color="white" css={{ fontWeight: "$semibold", fontSize: "$md" }}>
+              {name}
+              </Text>
+              <Text color="#d1d1d1" size={12}>
+              Quantity: {quantity}
+              </Text>
+            </Col>
+          </Row>
+          </Col>
+          <Col >
+          <Row justify="flex-end">
+          <Text
+                css={{ color: "inherit"}}
+                size={12}
+                weight="bold"
+                transform="uppercase"
+              >
+                 {formatter.format(price)}
+              </Text>
+          </Row>
+          </Col>
+     
             </Card.Footer>
         </Card> 
     </Grid>

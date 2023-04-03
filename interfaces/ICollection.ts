@@ -13,5 +13,6 @@ export interface Figure {
     brand:    string;
     price:    number;
     quantity: number;
-    __v:      number;
+    thumbpath: string;
+    
 }

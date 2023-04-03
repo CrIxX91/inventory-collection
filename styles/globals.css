@@ -24,6 +24,13 @@
       }
 }
 
+.thumb{
+    width: auto;
+    height: 150px !important;
+    position: relative !important;
+    object-fit: unset;
+}
+
 /* @media (min-width: 1280px) {
     .image-container {
         width: 100vw;

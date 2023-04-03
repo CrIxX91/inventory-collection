@@ -2,13 +2,13 @@ import { authApi } from "@/api";
 import { Layout } from "@/components/layout";
 import { InputFormNoSSR, ModalSuccess, SelectBrand, Spinner } from "@/components/ui";
 import { AuthContext } from "@/context";
-import { pusher } from "@/utils";
+import { pusher, uploadFThumb } from "@/utils";
 // import Pusher from "pusher-js";
 // import { socket } from "@/utils";
-import { Image, Grid, FormElement, Spacer, Container, Text, Button, Card, Row} from "@nextui-org/react";
+import { Image, Grid, FormElement, Spacer, Container, Text, Button, Card, Row, Input, Loading} from "@nextui-org/react";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { NextPage } from "next";
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import { ChangeEvent, Fragment, InputHTMLAttributes, useContext, useEffect, useRef, useState } from "react";
 import mewtwo from '../public/Mewtwo.png';
 
 interface DefaulState{
@@ -16,6 +16,7 @@ interface DefaulState{
     brand:string;
     price:string;
     quantity:string;
+    thumbpath:string;
 }
 
 
@@ -39,6 +40,11 @@ const HomePage: NextPage = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [message, setMessage] = useState('');
+    const [filePath, setFilePath] = useState('');
+    const [showThumb, setShowThumb] = useState(false);
+    const [showSpinner, setShowSpinner] = useState(false)
+
+    // const [fileSelected, setFileSelected] = useState<File>()
     
     // const [token, settoken] = useState('');
 
@@ -48,11 +54,12 @@ const HomePage: NextPage = () => {
         console.log(open)
     }
 
-    const [inputValues, setInputValues] = useState({
+    const [inputValues, setInputValues] = useState<DefaulState>({
         name: '',
         brand: '',
         price:'',
-        quantity:''
+        quantity:'',
+        thumbpath:'',
 
     });
     const nameRef = useRef<HTMLInputElement>(null);
@@ -112,11 +119,13 @@ const HomePage: NextPage = () => {
                     name: '',
                     brand: inputValues.brand,
                     price:'',
-                    quantity:''
-            
+                    quantity:'',
+                    thumbpath:''
                 });
                 setMessage(data.message)
                 setSuccess(data.success);
+                setShowThumb(false);
+                setShowSpinner(false);
                 // socket.emit('Figures','update');
                 setTimeout(() => {
                     setLoading(false);
@@ -151,6 +160,31 @@ const HomePage: NextPage = () => {
         if(quantityRef.current)
             quantityRef.current.value =''
     }
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFile =async (e:ChangeEvent)=>{
+        
+        const target= e.target as HTMLInputElement;
+
+        if (!target.files){
+            return
+        }
+
+        if(target.files.length>0)
+        {
+            const fileobj = target.files[0];
+            setShowSpinner(true);
+            setShowThumb(false);
+            const resp = await uploadFThumb(fileobj);
+            setInputValues({ ...inputValues, ['thumbpath']: resp });
+            setFilePath(resp);
+            setShowThumb(true);
+            setShowSpinner(false);
+            console.log(resp);
+        }
+        
+        
+    }
 
     return(
         <Layout title="Add Item to Collection">
@@ -171,7 +205,8 @@ const HomePage: NextPage = () => {
                             <Image 
                                 src={mewtwo.src}  
                                 objectFit="fill" 
-                                className={'image'} />
+                                className={'image'}
+                                alt="thumb" />
                         </Grid>
 
                         <Grid css={{display:'flex'}} justify='center' direction="column" xs={10} md={4} sm={6}>
@@ -193,6 +228,27 @@ const HomePage: NextPage = () => {
                             <Spacer y={2} />
                             <InputFormNoSSR id="quantity" placeholder="Quantity" onChangeField={onFieldChange} refobj={quantityRef}/>
                             <Spacer y={1} />
+                            <Input type="file" color="secondary" onChange={handleFile} ref={fileInputRef} css={{display:'none'} } accept="image/*"/>
+                            <Button shadow color="gradient" size="sm" onPress={()=>fileInputRef.current?.click()}> Select Thumb</Button>
+                            {
+                                showThumb&&
+                                <Fragment>
+                                    <Spacer y={1} />
+                                    <Image src={filePath}  
+                                    objectFit="fill" 
+                                    className={'thumb'}
+                                    alt="thumb" />
+                                </Fragment>
+                            }
+                            {   !showThumb && showSpinner&&
+                                <Fragment>
+                                    <Spacer y={1} />
+                                    <Loading color="warning" textColor="warning">
+                                        Uploading
+                                    </Loading>
+                                </Fragment>
+                                
+                            }
                         </Card.Body>
                             <Card.Divider />
                             <Card.Footer>
