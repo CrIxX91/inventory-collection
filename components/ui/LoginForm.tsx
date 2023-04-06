@@ -1,8 +1,9 @@
 import { Grid, Card, Text, Spacer, Button, FormElement, Badge } from "@nextui-org/react";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, Fragment, useContext, useState } from "react";
 import { InputFormNoSSR } from "./InputForm";
 import { AuthContext } from '../../context/auth/AuthContext';
 import { useRouter } from "next/router";
+import { Spinner } from "./Spinner";
 
 interface ILoginData{
   email:string;
@@ -12,6 +13,7 @@ interface ILoginData{
 export const LoginForm = () => {
 
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const {loginUser} = useContext(AuthContext);
   const [showError, setShowError] = useState(false);
@@ -24,14 +26,16 @@ export const LoginForm = () => {
 
   const onHandleLogin = async()=>{
     
+    setLoading(true);
     const isValidLogin = await loginUser(loginData.email,loginData.password);
 
     if(!isValidLogin){
       setShowError(true);
+      setLoading(false);
       setTimeout(() => setShowError(false), 3000);
       return;
     }
-
+    setLoading(false);
     router.replace('/collection/add');
 
   }
@@ -48,6 +52,8 @@ export const LoginForm = () => {
   
 
   return (
+    <Fragment>
+    
     <Grid.Container justify="center" css={{backgroundColor: 'var(--nextui-colors-background)'}} >
       <Grid xs={10} md={4} sm={6} direction='column'>
               <Card css={{padding:50}}>
@@ -62,5 +68,8 @@ export const LoginForm = () => {
               </Card>
           </Grid>
     </Grid.Container>
+    <Spinner open={loading}/>
+    </Fragment>
+
   )
 }

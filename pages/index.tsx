@@ -1,7 +1,6 @@
 import { AuthLayout } from "@/components/layout";
 import { LoginForm } from "@/components/ui";
 import { Spacer } from "@nextui-org/react";
-import Cookies from "js-cookie";
 import { NextPage } from "next";
 import { Fragment } from "react";
 
@@ -13,6 +12,7 @@ const HomePage: NextPage = () => {
         <Spacer y={2.5} />
         <LoginForm/>
       </AuthLayout>
+      
     </Fragment>
   )
 }

@@ -32,10 +32,10 @@ export const Navbar = () => {
           />
         </Grid>
         </Grid.Container>
-        <NextLink href='/add' passHref>
+        <NextLink href='/collection/add' passHref>
             <Text color='white' transform='capitalize'>Add</Text>
         </NextLink>
-        <NextLink href='/list' passHref>
+        <NextLink href='/collection/list' passHref>
             <Text color='white' transform='capitalize'>Collection</Text>
         </NextLink>
     </div>
