@@ -93,7 +93,8 @@ const HomePage: NextPage = () => {
                             <Image 
                                 src={mewtwo.src}  
                                 objectFit="fill" 
-                                className={'image'} />
+                                className={'image'}
+                                alt="Mewtwo" />
                         </Grid>
                         <Grid css={{display:'flex'}} justify='center' direction="column">
                             <InputFormNoSSR id="token" placeholder="Name" initialValue='' onChangeField={onChaneToken}/>

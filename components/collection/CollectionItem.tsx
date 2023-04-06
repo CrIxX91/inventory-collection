@@ -2,7 +2,6 @@ import { Figure } from "@/interfaces"
 import { BrandLogos, formatter } from "@/utils";
 import { Avatar, Button, Card, Col, Grid, Row, Spacer, Text } from "@nextui-org/react";
 import { FC } from "react";
-import aqua from '../../public/thumbs/aqua.jpg'
 
 interface CollectionItemProps{
     figure:Figure;
@@ -26,6 +25,7 @@ export const CollectionItem:FC<CollectionItemProps>  = ({figure}) => {
 
   return (
         <Grid xl={2} lg={2} md={3} sm={3} xs={6}  key={_id} >
+          
         <Card isHoverable isPressable 
             css={{ w: "100%", h: "360px", 
                   backgroundImage:`url(${figure.thumbpath})`,
@@ -51,15 +51,7 @@ export const CollectionItem:FC<CollectionItemProps>  = ({figure}) => {
             >
           <Col>
           <Row>
-            <Col span={5}>
-              <Avatar
-                size="lg"
-                src={getLogo(brand)}
-                color="gradient"
-                bordered
-                squared
-              />
-            </Col>
+          
             <Col span={12}>
               <Text color="white" css={{ fontWeight: "$semibold", fontSize: "$md" }}>
               {name}
@@ -82,8 +74,22 @@ export const CollectionItem:FC<CollectionItemProps>  = ({figure}) => {
               </Text>
           </Row>
           </Col>
+       
      
             </Card.Footer>
+            <Avatar
+                size="lg"
+                src={getLogo(brand)}
+                color="gradient"
+                bordered
+                squared
+                css={{
+                  position:'absolute',
+                  bottom:'70px',
+                  right:'10px',
+                  zIndex:'3'
+                }}
+              />
         </Card> 
     </Grid>
   )

@@ -8,8 +8,8 @@ import { pusher, uploadFThumb } from "@/utils";
 import { Image, Grid, FormElement, Spacer, Container, Text, Button, Card, Row, Input, Loading} from "@nextui-org/react";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { NextPage } from "next";
-import { ChangeEvent, Fragment, InputHTMLAttributes, useContext, useEffect, useRef, useState } from "react";
-import mewtwo from '../public/Mewtwo.png';
+import { ChangeEvent, Fragment, useContext, useEffect, useRef, useState } from "react";
+import mewtwo from '../../public/Mewtwo.png';
 
 interface DefaulState{
     name:string;

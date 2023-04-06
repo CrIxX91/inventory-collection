@@ -32,7 +32,7 @@ export const LoginForm = () => {
       return;
     }
 
-    router.replace('/add');
+    router.replace('/collection/add');
 
   }
 

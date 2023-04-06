@@ -1,8 +1,9 @@
-import {FC,ReactNode,useReducer} from 'react';
+import {FC,ReactNode,useEffect,useReducer} from 'react';
 import { IUser } from '@/interfaces';
 import { AuthContext, authReducer } from './';
 import { authApi } from '@/api';
-import { AxiosError, AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig } from 'axios';
+import Cookies from 'js-cookie';
 
 export interface AuthState{
     isLoggedIn:boolean;
@@ -18,8 +19,20 @@ const AUTH_INITIAL_STATE ={
     user:undefined
 }
 
+
+
+
 export const AuthProvider:FC<Props> = ({children}) => {
   const [state, dispatch] = useReducer(authReducer,AUTH_INITIAL_STATE);
+
+//   useEffect(() => {
+//     checkToken()
+//   }, [])
+
+//   const checkToken = async () => {
+    
+//   }
+
 
   const loginUser =async (email:string, password:string):Promise<boolean> => {
 
@@ -43,10 +56,11 @@ export const AuthProvider:FC<Props> = ({children}) => {
         const response = await (await authApi(config)).data;
         const {accessToken,refreshToken,username} = response.data;
 
-        sessionStorage.setItem("accessToken", accessToken);
-        sessionStorage.setItem("refreshToken", refreshToken);
+        // sessionStorage.setItem("accessToken", accessToken);
+        // sessionStorage.setItem("refreshToken", refreshToken);
+        Cookies.set('accessToken',accessToken);
 
-        console.log(response);
+        console.log('Auth',response);
         dispatch({type:'[Auth - Login]',payload:username});
         return true
 
@@ -56,10 +70,11 @@ export const AuthProvider:FC<Props> = ({children}) => {
 
   }
 
-  const checkToken = async():Promise<boolean> => {
+  const checkToken = async() => {
     try {
-        const accessToken = sessionStorage.getItem('accessToken');
-        console.log(accessToken);
+        // const accessToken = sessionStorage.getItem('accessToken');
+        const accessToken = Cookies.get('accessToken');
+        console.log('Token from cookie',accessToken);
         
         if(!accessToken){
             console.log('entra')
@@ -68,21 +83,25 @@ export const AuthProvider:FC<Props> = ({children}) => {
 
         const config:AxiosRequestConfig ={
             method: "GET",
-            url: 'auth/info',
+            url: 'auth/validate-token',
             headers: {
                 'Content-Type': 'application/json',
                 'x-token':accessToken
             },
         };
 
-        const response = await (await authApi(config)).data;
-        console.log('response info',response.username);
+        const data = await (await authApi(config)).data;
+        // const {data} = await authApi('auth/validate-token');
+        console.log('response info',data.username);
+        dispatch({type:'[Auth - Login]',payload:data.username});
 
         return true
     } catch (error) {
-        return false
+        Cookies.remove('accessToken');
+        return false;
     }
   }
+  
   const refreshToken = async():Promise<boolean> => {
     
     try {
@@ -94,7 +113,7 @@ export const AuthProvider:FC<Props> = ({children}) => {
 
         const config:AxiosRequestConfig ={
             method: "GET",
-            url: 'auth/renew',
+            url: 'auth/refresh-token',
             headers: {
                 'Content-Type': 'application/json',
                 'x-token':refreshToken

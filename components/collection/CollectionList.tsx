@@ -10,7 +10,7 @@ interface CollectionProps{
 export const CollectionList:FC<CollectionProps> = ({figures}) => {
   return (
     <Fragment>
-        <Grid.Container gap={4} direction='row' justify="center" css={{paddingTop:'2em'}}>
+        <Grid.Container gap={1} direction='row' justify="center" css={{paddingTop:'2em'}}>
             {
                 figures.map(fig=>(
                     <CollectionItem  figure={fig} key={fig._id}/>
